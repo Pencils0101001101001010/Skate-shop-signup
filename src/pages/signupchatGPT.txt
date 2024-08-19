@@ -1,0 +1,48 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+function SignupForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try { 
+      const response = await axios.post('/api/signup', formData);
+      console.log('User registered successfully:', response.data);
+      // Redirect to a success page or handle other logic
+    } catch (error) {
+      console.error('Error registering user:', error.message);
+      // Handle error (e.g., display an error message)
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input type="text" name="name" value={formData.name} onChange={handleChange} />
+      </label>
+      <label>
+        Email:
+        <input type="email" name="email" value={formData.email} onChange={handleChange} />
+      </label>
+      <label>
+        Password:
+        <input type="password" name="password" value={formData.password} onChange={handleChange} />
+      </label>
+      <button type="submit">Sign Up</button>
+    </form>
+  );
+}
+
+export default SignupForm;
